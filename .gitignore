@@ -8,3 +8,5 @@ venv/
 MANIFEST
 dist/
 *.ipynb
+*.idea
+tags

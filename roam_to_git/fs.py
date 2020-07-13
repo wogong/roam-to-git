@@ -49,11 +49,14 @@ def unzip_markdown_archive(zip_dir_path: Path):
 def save_markdowns(directory: Path, contents: Dict[str, str]):
     logger.debug("Saving markdown to {}", directory)
     # Format and write the markdown files
+    logger.debug(directory)
     for file_name, content in contents.items():
         dest = (directory / file_name)
         dest.parent.mkdir(parents=True, exist_ok=True)  # Needed if a new directory is used
         # We have to specify encoding because crontab on Mac don't use UTF-8
         # https://stackoverflow.com/questions/11735363/python3-unicodeencodeerror-crontab
+        logger.debug(file_name)
+        logger.debug(dest)
         with dest.open("w", encoding="utf-8") as f:
             f.write(content)
 
