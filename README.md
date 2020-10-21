@@ -3,22 +3,22 @@
 [![Roam Research backup](https://github.com/MatthieuBizien/roam-to-git-demo/workflows/Roam%20Research%20backup/badge.svg)](https://github.com/MatthieuBizien/roam-to-git-demo/actions)
 [![roam-to-git tests.py](https://github.com/MatthieuBizien/roam-to-git/workflows/roam-to-git%20tests.py/badge.svg)](https://github.com/MatthieuBizien/roam-to-git/actions)
 
-This script help you backup your [RoamResearch](https://roamresearch.com/)!
+This script helps you backup your [RoamResearch](https://roamresearch.com/) graphs!
 
 This script automatically
-- Download a markdown archive of your RoamResearch workspace
-- Download a json archive of your RoamResearch workspace
-- Unzip them to your git directory
-- Commit and push the difference
+- Downloads a markdown archive of your RoamResearch workspace
+- Downloads a json archive of your RoamResearch workspace
+- Unzips them to your git directory
+- Commits and pushes the difference to Github
 
 # Demo
-[See it in action!](https://github.com/MatthieuBizien/roam-to-git-demo). That repo is updated using roam-to-git.
+[See it in action!](https://github.com/MatthieuBizien/roam-to-git-demo). This repo is updated using roam-to-git.
 
 # Why to use it
 
-- You have a backup if RoamResearch lose some of your data.
+- You have a backup if RoamResearch loses some of your data.
 - You have a history of your notes.
-- You can browse your Github repository with a mobile phone.
+- You can browse your Github repository easily with a mobile device
 
 
 # Use it with Github Actions (recommended)
@@ -32,7 +32,23 @@ Or [manually](https://help.github.com/en/github/getting-started-with-github/crea
 ## Configure Github secrets 
 
 - Go to github.com/your/repository/settings/secrets 
-- Add secrets like in [env.template](env.template)
+
+###
+
+Add 3 (separate) secrets where the names are 
+
+`ROAMRESEARCH_USER`
+
+`ROAMRESEARCH_PASSWORD`
+
+`ROAMRESEARCH_DATABASE`
+
+- Refer to [env.template](env.template) for more information
+
+- when inserting the information, there is no need for quotations or assignments
+
+![image](https://user-images.githubusercontent.com/173090/90904133-2cf1c900-e3cf-11ea-960d-71d0543b8158.png)
+
 
 ## Add GitHub action
 
@@ -50,6 +66,10 @@ git push --set-upstream origin master
 
 - Go to github.com/your/repository/actions
 - Your CI job should start in a few seconds
+
+### Note:
+
+If the backup does not automatically start, try pushing to the repository again
 
 
 # Use it locally
@@ -87,6 +107,25 @@ Then run `git push --set-upstream origin master`
 One-liner to run it with a [cron](https://en.wikipedia.org/wiki/Cron) every hours: 
 `echo "0 *  *  *  *  '$(which roam-to-git)' '$(pwd)/notes'" | crontab -`
 
+NB: there are [issues](https://github.com/MatthieuBizien/roam-to-git/issues/43) on Mac with a crontab.
+
+# Debug
+
+Making `roam-to-git` foolproof is hard, as it depends on Roam, on Github Action or the local environment, 
+on software not very stable (`pyppeteer` we still love you 😉 )
+and on the correct user configuration.
+
+For debugging, please try the following:
+
+- Check that the environment variables `ROAMRESEARCH_USER`, `ROAMRESEARCH_PASSWORD`, `ROAMRESEARCH_DATABASE` are correctly setup
+- Login into Roam using the username and the password. 
+You may want to ask a new password if you have enabled Google Login, as it solved some user problems.
+- Run `roam-to-git --debug` to check the authentification and download work
+- Look at the traceback
+- Look for similar issues
+- If nothing else work, create a new issue with as many details as possible. 
+I will try my best to understand and help you, no SLA promised 😇
+
 # Task list
 
 ## Backup all RoamResearch data
@@ -109,7 +148,7 @@ One-liner to run it with a [cron](https://en.wikipedia.org/wiki/Cron) every hour
 ### Backlink formatting
 - [x] Add backlinks reference to the notes files
 - [x] Integrate the context into the backlink
-- [ ] Manage `/` in file names
+- [x] Manage `/` in file names
 
 ### Other formatting
 - [x] Format `{{TODO}}` to be compatible with Github markdown
